@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
     [SerializeField] float rcsThrust = 100f;
     [SerializeField] float mainThrust = 100f;
+    [SerializeField] AudioClip MainEngine;
+    [SerializeField] AudioClip LevelLoad;
+    [SerializeField] AudioClip Death ;
 
     Rigidbody rigidBody;
     AudioSource audioSource;
@@ -12,7 +16,7 @@ public class Rocket : MonoBehaviour
     enum  State { Alive, Dying, Transcending};
     State state = State.Alive;
 
-
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -91,18 +95,23 @@ public class Rocket : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space)) //can thrust while rotating
         {
-            float thrustThisFrame = Time.deltaTime * mainThrust;
-            //print("Thrusting");
-            rigidBody.AddRelativeForce(Vector3.up * mainThrust);
-            if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-            }
+            ApplyThrust();
         }
         else
         {
             audioSource.Stop();
         }
+    }
+
+    private void ApplyThrust()
+    {
+        float thrustThisFrame = Time.deltaTime * mainThrust;
+        rigidBody.AddRelativeForce(Vector3.up * mainThrust);
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(MainEngine);
+        }
+
     }
 
     private void LoadNextScene()
@@ -129,20 +138,28 @@ public class Rocket : MonoBehaviour
                 break;
             case "Finish":
                 print("Finish");
-                state = State.Transcending;
+                HandleFinish();
                 Invoke("LoadNextScene", 1f);
                 break;
             default:
-                state = State.Dying;
                 HandleExplode();
                 Invoke("LoadFirstLevel", 1f);
                 break;
         }
     }
 
+    private void HandleFinish()
+    {
+        state = State.Transcending;
+        audioSource.Stop();
+        audioSource.PlayOneShot(LevelLoad);
+    }
+
     private void HandleExplode()
     {
-        print("Exploding");
+        state = State.Dying;
+        audioSource.Stop();
+        audioSource.PlayOneShot(Death);
         //nada
     }
 }
