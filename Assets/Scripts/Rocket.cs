@@ -11,6 +11,7 @@ public class Rocket : MonoBehaviour
     [SerializeField] AudioClip MainEngine;
     [SerializeField] AudioClip Success;
     [SerializeField] AudioClip Death;
+    [SerializeField] AudioClip Slap;
 
     [SerializeField] ParticleSystem MainEngineParticles;
     [SerializeField] ParticleSystem SuccessParticles;
@@ -18,6 +19,8 @@ public class Rocket : MonoBehaviour
 
 	static int currentLevel = 0;
     int sceneCount = 0;
+
+    bool collisionOff = false;
 
     Rigidbody rigidBody;
     AudioSource audioSource;
@@ -45,9 +48,19 @@ public class Rocket : MonoBehaviour
         {
             HandleLevelInput();
             HandleReset();
+            HandleDebugKeys();
             HandleThrust();
             HandleRotate();
             CleanYRotation();
+        }
+    }
+
+    private void HandleDebugKeys()
+    {
+        if (!Debug.isDebugBuild) { return; }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            collisionOff = !collisionOff;
         }
     }
 
@@ -153,9 +166,15 @@ public class Rocket : MonoBehaviour
         }
         else
         {
-            audioSource.Stop();
+            //audioSource.Stop();
             MainEngineParticles.Stop();
         }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            audioSource.Stop();
+        }
+
     }
 
     private void ApplyThrust()
@@ -164,6 +183,7 @@ public class Rocket : MonoBehaviour
         rigidBody.AddRelativeForce(Vector3.up * mainThrust);
         if (!audioSource.isPlaying)
         {
+            audioSource.Stop();
             audioSource.PlayOneShot(MainEngine);
         }
         MainEngineParticles.Play();
@@ -212,8 +232,14 @@ public class Rocket : MonoBehaviour
                 Invoke("LoadNextScene", levelLoadDelay);
                 break;
             default:
-                HandleExplode();
-                Invoke("LoadCurrentLevel", levelLoadDelay);
+                if (collisionOff)
+                {
+                    HandleCollisionOff();
+                }else
+                {
+                    HandleExplode();
+                    Invoke("LoadCurrentLevel", levelLoadDelay);
+                }
                 break;
         }
     }
@@ -224,6 +250,15 @@ public class Rocket : MonoBehaviour
         audioSource.Stop();
         audioSource.PlayOneShot(Success);
         SuccessParticles.Play();
+    }
+
+
+    private void HandleCollisionOff()
+    {
+        state = State.Dying;
+        audioSource.PlayOneShot(Slap);
+        state = State.Alive;
+        //nada
     }
 
     private void HandleExplode()
