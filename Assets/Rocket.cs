@@ -6,6 +6,7 @@ public class Rocket : MonoBehaviour
 {
     [SerializeField] float rcsThrust = 100f;
     [SerializeField] float mainThrust = 100f;
+    [SerializeField] float levelLoadDelay = 1f;
 
     [SerializeField] AudioClip MainEngine;
     [SerializeField] AudioClip Success;
@@ -208,11 +209,11 @@ public class Rocket : MonoBehaviour
             case "Finish":
                 print("Finish");
                 HandleFinish();
-                Invoke("LoadNextScene", 1f);
+                Invoke("LoadNextScene", levelLoadDelay);
                 break;
             default:
                 HandleExplode();
-                Invoke("LoadCurrentLevel", 1f);
+                Invoke("LoadCurrentLevel", levelLoadDelay);
                 break;
         }
     }
