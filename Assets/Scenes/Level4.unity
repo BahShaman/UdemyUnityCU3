@@ -228,9 +228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6dca7c913cc1841b1dc894ae746b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementVector: {x: 0, y: 0, z: 10}
+  movementVector: {x: 0, y: 0, z: 20}
   period: 2
-  movementFactor: 0
+  oldStyle: 0
 --- !u!1 &623238381 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8654314793258796059, guid: 3b28c5e27eee6174dbe219950ef3a394,
@@ -249,9 +249,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6dca7c913cc1841b1dc894ae746b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementVector: {x: 15, y: -5, z: 0}
+  movementVector: {x: 30, y: -10, z: 0}
   period: 2
-  movementFactor: 0
+  oldStyle: 0
 --- !u!1001 &698158873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1039,12 +1039,12 @@ PrefabInstance:
     - target: {fileID: 2843914074202997886, guid: 3b28c5e27eee6174dbe219950ef3a394,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.651
+      value: -21.651
       objectReference: {fileID: 0}
     - target: {fileID: 2843914074202997886, guid: 3b28c5e27eee6174dbe219950ef3a394,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 22
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 2843914074202997886, guid: 3b28c5e27eee6174dbe219950ef3a394,
         type: 3}
@@ -1298,7 +1298,7 @@ PrefabInstance:
     - target: {fileID: 2843914074202997886, guid: 3b28c5e27eee6174dbe219950ef3a394,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.9
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 2843914074202997886, guid: 3b28c5e27eee6174dbe219950ef3a394,
         type: 3}

@@ -204,7 +204,7 @@ public class Rocket : MonoBehaviour
         }
         else
         {
-            currentLevel = sceneCount - 1;
+            currentLevel = 0;
         }
         SceneManager.LoadScene(currentLevel);
     }
